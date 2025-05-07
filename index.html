@@ -57,14 +57,8 @@
         // Tính trung tâm của polyline
         const centerLatLng = polyline.getBounds().getCenter();
 
-        L.marker(centerLatLng, {
-            icon: L.divIcon({
-            className: 'text-label',  // CSS class nếu muốn thêm style
-            html: '<b>Công viên Hồng Bàng</b>',
-            iconSize: [100, 20]
-            }),
-            interactive: false // không cho click
-        }).addTo(map);
+        L.marker(centerLatLng).addTo(map);
+          marker.bindTooltip("Chú thích khi rê chuột").openTooltip();
 
 
         const marker = L.marker([9.18060, 105.16363]).addTo(map);
