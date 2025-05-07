@@ -53,10 +53,18 @@
             opacity: 2,       // Độ đậm nhạt
             smoothFactor: 1     // Độ làm mượt
         }).addTo(map);
+        // Tính trung tâm của polyline
         const centerLatLng = polyline.getBounds().getCenter();
-        L.marker(centerLatLng)
-          .addTo(map)
-          .bindPopup('Trung tâm của tuyến đường');
+
+        L.marker(centerLatLng, {
+            icon: L.divIcon({
+            className: 'text-label',  // CSS class nếu muốn thêm style
+            html: 'Công viên Hồng Bàng',
+            iconSize: [100, 20]
+            }),
+            interactive: false // không cho click
+        }).addTo(map);
+
 
         const marker = L.marker([9.18060, 105.16363]).addTo(map);
         marker.bindPopup('Trường cao đẳng cộng đồng Cà Mau');
