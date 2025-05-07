@@ -26,7 +26,12 @@
         }).addTo(map);
 
         // Thêm marker
-        L.marker([9.18060, 105.16363]).addTo(map)
+        L.circle([9.18060, 105.16363], {
+            color: 'blue',
+            fillcolor: '#30f',
+            fillOpacity: 0.5,
+            radius: 200
+                ).addTo(map)
             .bindPopup('Trường cao đẳng cộng đồng Cà Mau')
             .openPopup();
     </script>
