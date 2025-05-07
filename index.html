@@ -73,6 +73,22 @@ marker.bindPopup('Trường cao đẳng cộng đồng Cà Mau');
 marker.on('click', function () {
 marker.openPopup();
 });
+  
+  var polygon = L.polygon([
+
+[9.179397024407777, 105.1510122053681],
+
+[9.176675014115654, 105.15095856118604],
+
+[9.178443793608876, 105.15231039457406]
+
+], {
+
+    color: 'red',
+    opacity: 0.5,
+    weight: 4,
+    filOpacity: '#ffff00'
+}).addTo(map);
 </script>
 </body>
 </html>
