@@ -54,10 +54,6 @@
             smoothFactor: 1     // Độ làm mượt
         }).addTo(map);
 
-// Zoom bản đồ để thấy rõ đường
-map.fitBounds(polyline.getBounds());
-
-
         const marker = L.marker([9.18060, 105.16363]).addTo(map);
         marker.bindPopup('Trường cao đẳng cộng đồng Cà Mau');
 
