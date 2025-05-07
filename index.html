@@ -18,7 +18,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // Khởi tạo map, đặt tọa độ và zoom mặc định
-        var map = L.map('map').setView([9.18060, 105.16363], 20); // TOA DO TRUONG CAO DANG CONG CA MAU
+        var map = L.map('map').setView([9.179145396604513, 105.15515064124347], 15);
 
         // Load tiles từ OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -38,6 +38,31 @@
         L.marker([9.176606, 105.151608]).addTo(map)
             .bindPopup('UBND Tỉnh Cà Mau')
             .openPopup();
+
+        const latlngs = [
+        [9.17584831201339, 105.15076072192856], // Điểm 1
+        [9.175877438761141, 105.15105308272081],                 // Điểm 2
+        [9.175268424446783, 105.15188724975191],
+        [9.17509631151626, 105.15021891568972]    // Điểm 3 (tuỳ ý thêm)
+        ];
+
+        const polyline = L.polyline(latlngs, {
+            color: 'red',       // Màu đường
+            weight: 1,          // Độ dày
+            opacity: 2,       // Độ đậm nhạt
+            smoothFactor: 1     // Độ làm mượt
+        }).addTo(map);
+
+// Zoom bản đồ để thấy rõ đường
+map.fitBounds(polyline.getBounds());
+
+
+        const marker = L.marker([9.18060, 105.16363]).addTo(map);
+        marker.bindPopup('Trường cao đẳng cộng đồng Cà Mau');
+
+        marker.on('click', function () {
+        marker.openPopup();
+        });
     </script>
 </body>
 </html>
