@@ -46,11 +46,6 @@
         [9.17509631151626, 105.15021891568972],
         [9.17584831201339, 105.15076072192856]
         ];
-        const latlngs = polyline.getBounds().getCenter();
-
-       L.marker(latlngs)
-      .addTo(map)
-      .bindPopup('Marker trung tâm của polyline');
 
         const polyline = L.polyline(latlngs, {
             color: 'red',       // Màu đường
@@ -58,6 +53,10 @@
             opacity: 2,       // Độ đậm nhạt
             smoothFactor: 1     // Độ làm mượt
         }).addTo(map);
+        const centerLatLng = polyline.getBounds().getCenter();
+        L.marker(centerLatLng)
+          .addTo(map)
+          .bindPopup('Trung tâm của tuyến đường');
 
         const marker = L.marker([9.18060, 105.16363]).addTo(map);
         marker.bindPopup('Trường cao đẳng cộng đồng Cà Mau');
