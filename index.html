@@ -46,9 +46,9 @@
         [9.17509631151626, 105.15021891568972],
         [9.17584831201339, 105.15076072192856]
         ];
-        const centerLatLng = polyline.getBounds().getCenter();
+        const latlngs = polyline.getBounds().getCenter();
 
-       L.marker(centerLatLng)
+       L.marker(latlngs)
       .addTo(map)
       .bindPopup('Marker trung tâm của polyline');
 
