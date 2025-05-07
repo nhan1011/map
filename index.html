@@ -18,7 +18,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // Khởi tạo map, đặt tọa độ và zoom mặc định
-        var map = L.map('map').setView([9.18060, 105.16363], 13); // TOA DO TRUONG CAO DANG CONG CA MAU
+        var map = L.map('map').setView([9.18060, 105.16363], 20); // TOA DO TRUONG CAO DANG CONG CA MAU
 
         // Load tiles từ OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -33,6 +33,10 @@
             radius: 200
                 }).addTo(map)
             .bindPopup('Trường cao đẳng cộng đồng Cà Mau')
+            .openPopup();
+        
+        L.marker([9.176606, 105.151608]).addTo(map)
+            .bindPopup('UBND Tỉnh Cà Mau')
             .openPopup();
     </script>
 </body>
