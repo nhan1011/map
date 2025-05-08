@@ -23,146 +23,123 @@ var currentLatLng = null;
 var savedLocations = [];
 
 // Click trên bản đồ
-    map.on('click', function(e) {
-      currentLatLng = e.latlng;
+map.on('click', function(e) {
+  currentLatLng = e.latlng;
 
-      if (currentMarker) {
-        currentMarker.setLatLng(e.latlng);
-      } else {
-        currentMarker = L.marker(e.latlng).addTo(map);
-      }
+  if (currentMarker) {
+    currentMarker.setLatLng(e.latlng);
+  } else {
+    currentMarker = L.marker(e.latlng).addTo(map);
+  }
 
-      document.getElementById('coords').textContent =
-        `${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`;
-    });
+  document.getElementById('coords').textContent =
+    `${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`;
+});
 
-    // Hàm lưu vị trí
+// Hàm lưu vị trí
 function saveLocation() {
-    if (!currentLatLng) {
-        alert("Bạn chưa chọn vị trí!");
-        return;
-      }
+  if (!currentLatLng) {
+    alert("Bạn chưa chọn vị trí!");
+    return;
+  }
+
+  // Lưu vào mảng
+  savedLocations.push(currentLatLng);
+
+  // Tạo marker mới (cố định)
+  var marker = L.marker(currentLatLng).addTo(map);
+  var info = `Vị trí ${savedLocations.length}: ${currentLatLng.lat.toFixed(6)}, ${currentLatLng.lng.toFixed(6)}`;
+  marker.bindPopup(info).openPopup();
+
+  // Hiển thị danh sách
+  var li = document.createElement("li");
+  li.textContent = info;
+  document.getElementById("saved-list").appendChild(li);
+
+  // Reset marker hiện tại
+  currentMarker.remove();
+  currentMarker = null;
+  currentLatLng = null;
+  document.getElementById('coords').textContent = "Chưa chọn";
 }
 
-      // Lưu vào mảng
-savedLocations.push(currentLatLng);
-
-      // Tạo marker mới (cố định)
-var marker = L.marker(currentLatLng).addTo(map);
-var info = `Vị trí ${savedLocations.length}: ${currentLatLng.lat.toFixed(6)}, ${currentLatLng.lng.toFixed(6)}`;
-marker.bindPopup(info).openPopup();
-
-      // Hiển thị danh sách
-var li = document.createElement("li");
-li.textContent = info;
-document.getElementById("saved-list").appendChild(li);
-
-      // Reset marker hiện tại
-currentMarker.remove();
-currentMarker = null;
-currentLatLng = null;
-document.getElementById('coords').textContent = "Chưa chọn";
 // Load tiles từ OpenStreetMap
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-attribution: '© OpenStreetMap contributors'
+  attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Thêm marker
+// Các đối tượng cố định trên bản đồ
 L.circle([9.18060, 105.16363], {
-color: 'red',
-fillColor: 'blue',
-fillOpacity: 0.5,
-radius: 200
+  color: 'red',
+  fillColor: 'blue',
+  fillOpacity: 0.5,
+  radius: 200
 }).addTo(map)
 .bindPopup('Trường cao đẳng cộng đồng Cà Mau')
 .openPopup();
 
 L.marker([9.176606, 105.151608]).addTo(map)
-.bindPopup('UBND Tỉnh Cà Mau')
-.openPopup();
-
+.bindPopup('UBND Tỉnh Cà Mau');
 
 const latlngs = [
-[9.17584831201339, 105.15076072192856],
-[9.175877438761141, 105.15105308272081],    
-[9.175268424446783, 105.15188724975191],
-[9.17509631151626, 105.15021891568972],
-[9.17584831201339, 105.15076072192856]
+  [9.17584831201339, 105.15076072192856],
+  [9.175877438761141, 105.15105308272081],    
+  [9.175268424446783, 105.15188724975191],
+  [9.17509631151626, 105.15021891568972],
+  [9.17584831201339, 105.15076072192856]
 ];
 
 const polyline = L.polyline(latlngs, {
-color: 'red',       // Màu đường
-weight: 1,          // Độ dày
-opacity: 2,       // Độ đậm nhạt
-smoothFactor: 1     // Độ làm mượt
+  color: 'red',
+  weight: 1,
+  opacity: 2,
+  smoothFactor: 1
 }).addTo(map);
-// Tính trung tâm của polyline
+
+// Marker ở giữa polyline
 const centerLatLng = polyline.getBounds().getCenter();
-
 L.marker(centerLatLng, {
-icon: L.divIcon({
-className: 'text-label',  // CSS class nếu muốn thêm style
-html: '<b>Công viên Hồng Bàng</b>',
-iconSize: [100, 20]
-}),
-interactive: false // không cho click
+  icon: L.divIcon({
+    className: 'text-label',
+    html: '<b>Công viên Hồng Bàng</b>',
+    iconSize: [100, 20]
+  }),
+  interactive: false
 }).addTo(map);
 
-
-const marker = L.marker([9.18060, 105.16363]).addTo(map);
-marker.bindPopup('Trường cao đẳng cộng đồng Cà Mau');
-
-marker.on('click', function () {
-marker.openPopup();
-});
-  
-  var polygon = L.polygon([
-
-[9.179397024407777, 105.1510122053681],
-
-[9.176675014115654, 105.15095856118604],
-
-[9.178443793608876, 105.15231039457406]
-
+// Polygon 1
+var polygon1 = L.polygon([
+  [9.179397024407777, 105.1510122053681],
+  [9.176675014115654, 105.15095856118604],
+  [9.178443793608876, 105.15231039457406]
 ], {
-
-    color: 'red',
-    opacity: 0.5,
-    weight: 4,
-    fillColor: '#ffff00'
+  color: 'red',
+  opacity: 0.5,
+  weight: 4,
+  fillColor: '#ffff00'
 }).addTo(map);
-  polygon.bindTooltip("Công viên Hùng Vương").openTooltip();
+polygon1.bindTooltip("Công viên Hùng Vương").openTooltip();
 
-   var polygon = L.polygon([
-
-[9.18088586401132, 105.16291466611943],
-
-[9.181187718630213, 105.16289857281488],
-
-[9.18133070230569, 105.16406801605818],
-
-[9.180962651613903, 105.16416189337878],
-    
-[9.181124170310987, 105.16641763123262],
-
-[9.180830259186404, 105.16647395762497],
-
-[9.18055223492537, 105.16326335326063],
-
-[9.180922933891637, 105.16321507349573],
-
-[9.18088586401132, 105.16291466611943]
-
+// Polygon 2
+var polygon2 = L.polygon([
+  [9.18088586401132, 105.16291466611943],
+  [9.181187718630213, 105.16289857281488],
+  [9.18133070230569, 105.16406801605818],
+  [9.180962651613903, 105.16416189337878],
+  [9.181124170310987, 105.16641763123262],
+  [9.180830259186404, 105.16647395762497],
+  [9.18055223492537, 105.16326335326063],
+  [9.180922933891637, 105.16321507349573],
+  [9.18088586401132, 105.16291466611943]
 ], {
-
-    color: 'red',
-    opacity: 0.5,
-    weight: 4,
-    fillColor: '#ffff00'
+  color: 'red',
+  opacity: 0.5,
+  weight: 4,
+  fillColor: '#ffff00'
 }).addTo(map);
-  polygon.bindTooltip("Trường cao đẳng cộng đồng Cà Mau").openTooltip();
-
+polygon2.bindTooltip("Trường cao đẳng cộng đồng Cà Mau").openTooltip();
 </script>
+
     <p>Tọa độ đã chọn: <span id="coords">Chưa chọn</span></p>
 <button onclick="saveLocation()">Lưu vị trí</button>
 <ul id="saved-list"></ul>
