@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hiển thị Bản đồ với Leaflet</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 500px; width: 100%; }
+  </style>
+</head>
+<body>
+
+<h3>Bản đồ của tôi</h3>
+<div id="map"></div>
+
+<!-- Thêm phần hiển thị và nút lưu -->
+<p><strong>Tọa độ đã chọn:</strong> <span id="coords">Chưa chọn</span></p>
+<button onclick="saveLocation()">Lưu vị trí</button>
+<ul id="saved-list"></ul>
+
+<!-- Link JS Leaflet -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  var map = L.map('map').setView([9.178, 105.157], 16);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  L.circle([9.18060, 105.16363], {
+    color: 'red',
+    fillColor: 'blue',
+    fillOpacity: 0.5,
+    radius: 200
+  }).addTo(map).bindPopup('Trường cao đẳng cộng đồng Cà Mau').openPopup();
+
+  L.marker([9.176606, 105.151608]).addTo(map).bindPopup('UBND Tỉnh Cà Mau').openPopup();
+
+  const latlngs = [
+    [9.17584831201339, 105.15076072192856],
+    [9.175877438761141, 105.15105308272081],    
+    [9.175268424446783, 105.15188724975191],
+    [9.17509631151626, 105.15021891568972],
+    [9.17584831201339, 105.15076072192856]
+  ];
+  const polyline = L.polyline(latlngs, {
+    color: 'red',
+    weight: 1,
+    opacity: 2,
+    smoothFactor: 1
+  }).addTo(map);
+
+  const centerLatLng = polyline.getBounds().getCenter();
+  L.marker(centerLatLng, {
+    icon: L.divIcon({
+      className: 'text-label',
+      html: '<b>Công viên Hồng Bàng</b>',
+      iconSize: [100, 20]
+    }),
+    interactive: false
+  }).addTo(map);
+
+  const marker = L.marker([9.18060, 105.16363]).addTo(map);
+  marker.bindPopup('Trường cao đẳng cộng đồng Cà Mau');
+  marker.on('click', function () {
+    marker.openPopup();
+  });
+
+  var polygon1 = L.polygon([
+    [9.179397024407777, 105.1510122053681],
+    [9.176675014115654, 105.15095856118604],
+    [9.178443793608876, 105.15231039457406]
+  ], {
+    color: 'red',
+    opacity: 0.5,
+    weight: 4,
+    fillColor: '#ffff00'
+  }).addTo(map);
+  polygon1.bindTooltip("Công viên Hùng Vương").openTooltip();
+
+  var polygon2 = L.polygon([
+    [9.18088586401132, 105.16291466611943],
+    [9.181187718630213, 105.16289857281488],
+    [9.18133070230569, 105.16406801605818],
+    [9.180962651613903, 105.16416189337878],
+    [9.181124170310987, 105.16641763123262],
+    [9.180830259186404, 105.16647395762497],
+    [9.18055223492537, 105.16326335326063],
+    [9.180922933891637, 105.16321507349573],
+    [9.18088586401132, 105.16291466611943]
+  ], {
+    color: 'red',
+    opacity: 0.5,
+    weight: 4,
+    fillColor: '#ffff00'
+  }).addTo(map);
+  polygon2.bindTooltip("Trường cao đẳng cộng đồng Cà Mau").openTooltip();
+
+  // === THÊM ĐOẠN SCRIPT DƯỚI ĐÂY ===
+
+  var currentLatLng = null;
+  var currentMarker = null;
+  var savedLocations = [];
+
+  map.on('click', function(e) {
+    currentLatLng = e.latlng;
+
+    if (currentMarker) {
+      currentMarker.setLatLng(e.latlng);
+    } else {
+      currentMarker = L.marker(e.latlng).addTo(map);
+    }
+
+    document.getElementById('coords').textContent =
+      `${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`;
+  });
+
+  function saveLocation() {
+    if (!currentLatLng) {
+      alert("Bạn chưa chọn vị trí!");
+      return;
+    }
+
+    savedLocations.push(currentLatLng);
+
+    var marker = L.marker(currentLatLng).addTo(map);
+    var info = `Vị trí ${savedLocations.length}: ${currentLatLng.lat.toFixed(6)}, ${currentLatLng.lng.toFixed(6)}`;
+    marker.bindPopup(info).openPopup();
+
+    var li = document.createElement("li");
+    li.textContent = info;
+    document.getElementById("saved-list").appendChild(li);
+
+    currentMarker.remove();
+    currentMarker = null;
+    currentLatLng = null;
+    document.getElementById('coords').textContent = "Chưa chọn";
+  }
+</script>
+
+</body>
+</html>
