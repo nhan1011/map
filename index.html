@@ -18,6 +18,10 @@
 <script>
 // Khởi tạo map, đặt tọa độ và zoom mặc định
 var map = L.map('map').setView([9.178, 105.157], 16);
+var currentMarker = null;
+var currentLatLng = null;
+var savedLocations = [];
+
 // Click trên bản đồ
     map.on('click', function(e) {
       currentLatLng = e.latlng;
@@ -33,30 +37,31 @@ var map = L.map('map').setView([9.178, 105.157], 16);
     });
 
     // Hàm lưu vị trí
-    function saveLocation() {
-      if (!currentLatLng) {
+function saveLocation() {
+    if (!currentLatLng) {
         alert("Bạn chưa chọn vị trí!");
         return;
       }
+}
 
       // Lưu vào mảng
-      savedLocations.push(currentLatLng);
+savedLocations.push(currentLatLng);
 
       // Tạo marker mới (cố định)
-      var marker = L.marker(currentLatLng).addTo(map);
-      var info = `Vị trí ${savedLocations.length}: ${currentLatLng.lat.toFixed(6)}, ${currentLatLng.lng.toFixed(6)}`;
-      marker.bindPopup(info).openPopup();
+var marker = L.marker(currentLatLng).addTo(map);
+var info = `Vị trí ${savedLocations.length}: ${currentLatLng.lat.toFixed(6)}, ${currentLatLng.lng.toFixed(6)}`;
+marker.bindPopup(info).openPopup();
 
       // Hiển thị danh sách
-      var li = document.createElement("li");
-      li.textContent = info;
-      document.getElementById("saved-list").appendChild(li);
+var li = document.createElement("li");
+li.textContent = info;
+document.getElementById("saved-list").appendChild(li);
 
       // Reset marker hiện tại
-      currentMarker.remove();
-      currentMarker = null;
-      currentLatLng = null;
-      document.getElementById('coords').textContent = "Chưa chọn";
+currentMarker.remove();
+currentMarker = null;
+currentLatLng = null;
+document.getElementById('coords').textContent = "Chưa chọn";
 // Load tiles từ OpenStreetMap
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 attribution: '© OpenStreetMap contributors'
@@ -124,7 +129,7 @@ marker.openPopup();
     color: 'red',
     opacity: 0.5,
     weight: 4,
-    filColor: '#ffff00'
+    fillColor: '#ffff00'
 }).addTo(map);
   polygon.bindTooltip("Công viên Hùng Vương").openTooltip();
 
@@ -158,5 +163,9 @@ marker.openPopup();
   polygon.bindTooltip("Trường cao đẳng cộng đồng Cà Mau").openTooltip();
 
 </script>
+    <p>Tọa độ đã chọn: <span id="coords">Chưa chọn</span></p>
+<button onclick="saveLocation()">Lưu vị trí</button>
+<ul id="saved-list"></ul>
+
 </body>
 </html>
