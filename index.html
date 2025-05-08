@@ -13,8 +13,12 @@
 <body>
 <h3>Bản đồ của tôi</h3>
 <div id="map"></div>
+<!-- Link JS Leaflet -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-  // Click trên bản đồ
+// Khởi tạo map, đặt tọa độ và zoom mặc định
+var map = L.map('map').setView([9.178, 105.157], 16);
+// Click trên bản đồ
     map.on('click', function(e) {
       currentLatLng = e.latlng;
 
@@ -53,13 +57,6 @@
       currentMarker = null;
       currentLatLng = null;
       document.getElementById('coords').textContent = "Chưa chọn";
-</script>
-<!-- Link JS Leaflet -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-// Khởi tạo map, đặt tọa độ và zoom mặc định
-var map = L.map('map').setView([9.178, 105.157], 16);
-
 // Load tiles từ OpenStreetMap
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 attribution: '© OpenStreetMap contributors'
@@ -156,7 +153,7 @@ marker.openPopup();
     color: 'red',
     opacity: 0.5,
     weight: 4,
-    filColor: '#ffff00'
+    fillColor: '#ffff00'
 }).addTo(map);
   polygon.bindTooltip("Trường cao đẳng cộng đồng Cà Mau").openTooltip();
 
